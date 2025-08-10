@@ -10,6 +10,21 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [logoError, setLogoError] = useState(false)
 
+  // Debug: Check if we can access the logo
+  useEffect(() => {
+    fetch('/logo.png')
+      .then(response => {
+        if (!response.ok) {
+          console.error('Logo not found:', response.status);
+          setLogoError(true);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading logo:', error);
+        setLogoError(true);
+      });
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
@@ -66,10 +81,13 @@ const Navbar = () => {
                     height={15}
                     className="object-contain brightness-110"
                     priority
-                    onError={() => setLogoError(true)}
+                    onError={() => {
+                      console.error('Image component failed to load logo');
+                      setLogoError(true);
+                    }}
                   />
                 ) : (
-                  <span className="text-2xl font-bold gradient-text">Mexwaste</span>
+                  <span className="text-xl font-bold gradient-text">Mexwaste</span>
                 )}
               </div>
             </Link>
