@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Leaf } from 'lucide-react'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -41,6 +41,10 @@ const Navbar = () => {
     { href: '#contact', label: 'Contact' },
   ]
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
   return (
     <>
       <style jsx>{`
@@ -77,114 +81,81 @@ const Navbar = () => {
                   <Image
                     src="/logo.png"
                     alt="Mexwaste Logo"
-                    width={45}
-                    height={15}
-                    className="object-contain brightness-110"
-                    priority
-                    onError={() => {
-                      console.error('Image component failed to load logo');
-                      setLogoError(true);
-                    }}
+                    width={40}
+                    height={40}
+                    className="rounded-lg"
+                    onError={() => setLogoError(true)}
                   />
                 ) : (
-                  <span className="text-xl font-bold gradient-text">Mexwaste</span>
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <Leaf className="w-6 h-6 text-white" />
+                  </div>
                 )}
               </div>
+              <span className="ml-3 text-xl font-bold gradient-text">
+                Mexwaste
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
+            <div className="hidden md:flex items-center space-x-8">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative px-4 py-2 text-white/90 hover:text-white font-medium transition-all duration-300 rounded-full hover:bg-white/10 group"
+                  className="text-white/80 hover:text-white transition-colors duration-300 font-medium"
                 >
                   {link.label}
-                  <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-400 group-hover:w-3/4 transition-all duration-300 rounded-full"></span>
                 </Link>
               ))}
+              
+              {/* CTA Button */}
+              <button className="px-6 py-2 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-full text-white font-medium hover:scale-105 transition-all duration-300 shadow-lg shadow-emerald-500/25">
+                Get Started
+              </button>
             </div>
-
-            {/* CTA Button */}
-            <Link
-              href="/login"
-              className="hidden md:inline-flex relative px-6 py-2.5 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25 group overflow-hidden"
-            >
-              <span className="relative z-10">Get Started</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </Link>
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden relative p-2.5 text-white hover:bg-white/10 rounded-full transition-all duration-300 hover:scale-110"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={toggleMobileMenu}
+              className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors duration-300"
+              aria-label="Toggle mobile menu"
             >
-              <div className="relative w-6 h-6">
-                <span
-                  className={`absolute inset-0 transition-all duration-300 ${
-                    isMobileMenuOpen ? 'rotate-45 scale-0' : 'rotate-0 scale-100'
-                  }`}
-                >
-                  <Menu size={24} />
-                </span>
-                <span
-                  className={`absolute inset-0 transition-all duration-300 ${
-                    isMobileMenuOpen ? 'rotate-0 scale-100' : '-rotate-45 scale-0'
-                  }`}
-                >
-                  <X size={24} />
-                </span>
-              </div>
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        <div
-          className={`md:hidden mt-4 transition-all duration-500 ease-out ${
-            isMobileMenuOpen
-              ? 'opacity-100 transform translate-y-0 scale-100'
-              : 'opacity-0 transform -translate-y-4 scale-95 pointer-events-none'
-          }`}
-        >
-          <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-black/40 p-6">
-            {/* Mobile glow effect */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 blur-xl"></div>
-            
-            <div className="relative flex flex-col space-y-2">
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 py-6 px-8 bg-black/90 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl">
+            <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative px-4 py-3 text-white/90 hover:text-white font-medium transition-all duration-300 rounded-xl hover:bg-white/10 group"
                   onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-white/80 hover:text-white transition-colors duration-300 font-medium py-2"
                 >
-                  <span className="relative z-10">{link.label}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                  {link.label}
                 </Link>
               ))}
-              <div className="pt-4 border-t border-white/10">
-                <Link
-                  href="/login"
-                  className="block w-full text-center px-6 py-3 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Get Started
-                </Link>
-              </div>
+              
+              {/* Mobile CTA Button */}
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="mt-4 px-6 py-3 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-full text-white font-medium hover:scale-105 transition-all duration-300 shadow-lg shadow-emerald-500/25 text-center"
+              >
+                Get Started
+              </button>
             </div>
           </div>
-        </div>
+        )}
       </nav>
-
-      {/* Mobile menu backdrop */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
     </>
   )
 }
