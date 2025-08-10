@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
 import Image from 'next/image'
+import { Menu, X } from 'lucide-react'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [logoError, setLogoError] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,14 +58,19 @@ const Navbar = () => {
               className="flex items-center hover:scale-110 transition-all duration-300 z-10"
             >
               <div className="relative">
-                <Image
-                  src="/logo.png"
-                  alt="Mexwaste Logo"
-                  width={45}
-                  height={15}
-                  className="object-contain brightness-110"
-                  priority
-                />
+                {!logoError ? (
+                  <Image
+                    src="/logo.png"
+                    alt="Mexwaste Logo"
+                    width={45}
+                    height={15}
+                    className="object-contain brightness-110"
+                    priority
+                    onError={() => setLogoError(true)}
+                  />
+                ) : (
+                  <span className="text-2xl font-bold gradient-text">Mexwaste</span>
+                )}
               </div>
             </Link>
 
