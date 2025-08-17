@@ -345,8 +345,8 @@ const WorldClassNavbar = () => {
                   <img
                     src="/logo.png"
                     alt="Mexwaste Logo"
-                    width="32"
-                    height="32"
+                    width="42"
+                    height="42"
                     className="rounded-lg"
                     onError={() => setLogoError(true)}
                   />
