@@ -1,112 +1,147 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Menu, X, ChevronDown, ArrowRight, Sparkles, Zap, Globe, Shield } from 'lucide-react'
+import { useState, useEffect } from "react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  ArrowRight,
+  Sparkles,
+  Zap,
+  Globe,
+  Shield,
+} from "lucide-react";
 
 const WorldClassNavbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isHovering, setIsHovering] = useState(false)
-  const [logoError, setLogoError] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
   // Debug: Check if we can access the logo
   useEffect(() => {
-    fetch('/logo.png')
-      .then(response => {
+    fetch("/logo.png")
+      .then((response) => {
         if (!response.ok) {
-          console.error('Logo not found:', response.status);
+          console.error("Logo not found:", response.status);
           setLogoError(true);
         }
       })
-      .catch(error => {
-        console.error('Error loading logo:', error);
+      .catch((error) => {
+        console.error("Error loading logo:", error);
         setLogoError(true);
       });
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = window.scrollY > 20
-      setIsScrolled(scrolled)
-    }
+      const scrolled = window.scrollY > 20;
+      setIsScrolled(scrolled);
+    };
 
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('mousemove', handleMouseMove, { passive: true })
-    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
     return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [])
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
   const navSections = [
     {
-      label: 'Solutions',
-      href: '#solutions',
+      label: "Solutions",
+      href: "#solutions",
       hasDropdown: true,
       items: [
-        { 
-          title: 'AI Waste Sorting', 
-          description: 'Revolutionary machine learning for precise waste categorization',
+        {
+          title: "AI Waste Sorting",
+          description:
+            "Revolutionary machine learning for precise waste categorization",
           icon: <Zap className="w-5 h-5" />,
-          href: '#ai-sorting',
-          tag: 'New'
+          href: "#ai-sorting",
+          tag: "New",
         },
-        { 
-          title: 'Smart Analytics', 
-          description: 'Real-time insights and predictive waste management',
+        {
+          title: "Smart Analytics",
+          description: "Real-time insights and predictive waste management",
           icon: <Sparkles className="w-5 h-5" />,
-          href: '#analytics'
+          href: "#analytics",
         },
-        { 
-          title: 'Route Optimization', 
-          description: 'AI-powered collection route efficiency',
+        {
+          title: "Route Optimization",
+          description: "AI-powered collection route efficiency",
           icon: <Globe className="w-5 h-5" />,
-          href: '#routes'
+          href: "#routes",
         },
-        { 
-          title: 'Blockchain Tracking', 
-          description: 'Transparent, immutable waste lifecycle records',
+        {
+          title: "Blockchain Tracking",
+          description: "Transparent, immutable waste lifecycle records",
           icon: <Shield className="w-5 h-5" />,
-          href: '#blockchain',
-          tag: 'Beta'
-        }
-      ]
+          href: "#blockchain",
+          tag: "Beta",
+        },
+      ],
     },
-    { label: 'Technology', href: '#technology' },
-    { label: 'Impact', href: '#impact' },
-    { 
-      label: 'Company', 
-      href: '#company',
+    { label: "Technology", href: "#technology" },
+    { label: "Impact", href: "#impact" },
+    {
+      label: "Company",
+      href: "#company",
       hasDropdown: true,
       items: [
-        { title: 'About Us', description: 'Our mission to revolutionize waste management', href: '#about' },
-        { title: 'Careers', description: 'Join our team of innovators', href: '#careers' },
-        { title: 'News', description: 'Latest updates and announcements', href: '#news' },
-        { title: 'Sustainability', description: 'Our commitment to the environment', href: '#sustainability' }
-      ]
-    }
-  ]
+        {
+          title: "About Us",
+          description: "Our mission to revolutionize waste management",
+          icon: <ArrowRight className="w-5 h-5" />,
+          href: "#about",
+        },
+        {
+          title: "Careers",
+          description: "Join our team of innovators",
+          icon: <ArrowRight className="w-5 h-5" />,
+          href: "#careers",
+        },
+        {
+          title: "News",
+          description: "Latest updates and announcements",
+          icon: <ArrowRight className="w-5 h-5" />,
+          href: "#news",
+        },
+        {
+          title: "Sustainability",
+          description: "Our commitment to the environment",
+          icon: <ArrowRight className="w-5 h-5" />,
+          href: "#sustainability",
+        },
+      ],
+    },
+  ];
 
-  const handleDropdown = (index) => {
-    setActiveDropdown(activeDropdown === index ? null : index)
-  }
+  const handleDropdown = (index: number) => {
+    setActiveDropdown(activeDropdown === index ? null : index);
+  };
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <>
       <style jsx>{`
         .gradient-text {
-          background: linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%);
+          background: linear-gradient(
+            135deg,
+            #10b981 0%,
+            #3b82f6 50%,
+            #8b5cf6 100%
+          );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -129,8 +164,7 @@ const WorldClassNavbar = () => {
           backdrop-filter: blur(24px) saturate(180%);
           background: rgba(15, 23, 42, 0.95);
           border: 1px solid rgba(255, 255, 255, 0.15);
-          box-shadow: 
-            0 20px 50px rgba(0, 0, 0, 0.4),
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
             0 0 0 1px rgba(255, 255, 255, 0.05);
         }
 
@@ -149,7 +183,7 @@ const WorldClassNavbar = () => {
         }
 
         .nav-item::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: -100%;
@@ -177,7 +211,7 @@ const WorldClassNavbar = () => {
         }
 
         .cta-button::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: -100%;
@@ -197,8 +231,13 @@ const WorldClassNavbar = () => {
         }
 
         @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
         }
 
         @keyframes slideDown {
@@ -277,7 +316,7 @@ const WorldClassNavbar = () => {
 
       {/* Global glow effect that follows mouse */}
       {isHovering && (
-        <div 
+        <div
           className="fixed inset-0 nav-glow pointer-events-none z-40 transition-opacity duration-300"
           style={{ opacity: isHovering ? 1 : 0 }}
         />
@@ -288,15 +327,15 @@ const WorldClassNavbar = () => {
         <div
           className={`glass-nav relative transition-all duration-500 ease-out rounded-full border ${
             isScrolled
-              ? 'py-4 px-10 bg-black/80 backdrop-blur-xl shadow-2xl shadow-black/40 border-white/20 scale-95'
-              : 'py-5 px-12 bg-black/60 backdrop-blur-lg shadow-xl shadow-black/30 border-white/10'
+              ? "py-4 px-10 bg-black/80 backdrop-blur-xl shadow-2xl shadow-black/40 border-white/20 scale-95"
+              : "py-5 px-12 bg-black/60 backdrop-blur-lg shadow-xl shadow-black/30 border-white/10"
           }`}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
           {/* Glow effect */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-xl opacity-50"></div>
-          
+
           {/* Main content */}
           <div className="relative flex items-center">
             {/* Logo */}
@@ -312,9 +351,7 @@ const WorldClassNavbar = () => {
                     onError={() => setLogoError(true)}
                   />
                 ) : (
-                  <div className="text-2xl font-bold gradient-text">
-                    Mexaly
-                  </div>
+                  <div className="text-2xl font-bold gradient-text">Mexaly</div>
                 )}
               </div>
             </div>
@@ -330,9 +367,11 @@ const WorldClassNavbar = () => {
                         className="nav-item flex items-center space-x-1 text-white/90 hover:text-white hover-glow transition-colors duration-300 text-base font-normal"
                       >
                         <span>{section.label}</span>
-                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
-                          activeDropdown === index ? 'rotate-180' : ''
-                        }`} />
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-300 ${
+                            activeDropdown === index ? "rotate-180" : ""
+                          }`}
+                        />
                       </button>
                     ) : (
                       <a
@@ -347,16 +386,18 @@ const WorldClassNavbar = () => {
                     {section.hasDropdown && activeDropdown === index && (
                       <div className="dropdown-enter absolute top-full left-0 mt-2 w-80 glass-dropdown rounded-xl p-4 z-50">
                         <div className="space-y-2">
-                          {section.items.map((item, itemIndex) => (
+                          {section.items?.map((item, itemIndex) => (
                             <a
                               key={itemIndex}
                               href={item.href}
                               className="dropdown-item flex items-start space-x-3 p-3 rounded-lg group cursor-pointer"
                               onClick={() => setActiveDropdown(null)}
                             >
-                              <div className="flex-shrink-0 mt-0.5 text-emerald-400">
-                                {item.icon}
-                              </div>
+                              {item.icon && (
+                                <div className="flex-shrink-0 mt-0.5 text-emerald-400">
+                                  {item.icon}
+                                </div>
+                              )}
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center space-x-2">
                                   <h4 className="font-semibold text-white group-hover:text-emerald-300 transition-colors">
@@ -416,29 +457,35 @@ const WorldClassNavbar = () => {
                         className="mobile-nav-item w-full flex items-center justify-between text-white/80 hover:text-white transition-colors duration-300 font-medium py-2"
                       >
                         <span>{section.label}</span>
-                        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
-                          activeDropdown === index ? 'rotate-180' : ''
-                        }`} />
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-300 ${
+                            activeDropdown === index ? "rotate-180" : ""
+                          }`}
+                        />
                       </button>
-                      
+
                       {activeDropdown === index && (
                         <div className="mt-2 ml-4 space-y-2">
-                          {section.items.map((item, itemIndex) => (
+                          {section.items?.map((item, itemIndex) => (
                             <a
                               key={itemIndex}
                               href={item.href}
                               className="flex items-center space-x-3 p-3 text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-300"
                               onClick={() => {
-                                setIsMobileMenuOpen(false)
-                                setActiveDropdown(null)
+                                setIsMobileMenuOpen(false);
+                                setActiveDropdown(null);
                               }}
                             >
-                              <div className="text-emerald-400">
-                                {item.icon}
-                              </div>
+                              {item.icon && (
+                                <div className="text-emerald-400">
+                                  {item.icon}
+                                </div>
+                              )}
                               <div>
                                 <div className="flex items-center space-x-2">
-                                  <span className="font-medium">{item.title}</span>
+                                  <span className="font-medium">
+                                    {item.title}
+                                  </span>
                                   {item.tag && (
                                     <span className="tag">{item.tag}</span>
                                   )}
@@ -463,9 +510,9 @@ const WorldClassNavbar = () => {
                   )}
                 </div>
               ))}
-              
+
               {/* Mobile CTA Button */}
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="mt-4 px-6 py-3 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-full text-white font-medium hover:scale-105 transition-all duration-300 shadow-lg shadow-emerald-500/25 text-center"
               >
@@ -478,16 +525,16 @@ const WorldClassNavbar = () => {
 
       {/* Click outside to close dropdown */}
       {(activeDropdown !== null || isMobileMenuOpen) && (
-        <div 
-          className="fixed inset-0 z-40" 
+        <div
+          className="fixed inset-0 z-40"
           onClick={() => {
-            setActiveDropdown(null)
-            setIsMobileMenuOpen(false)
+            setActiveDropdown(null);
+            setIsMobileMenuOpen(false);
           }}
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default WorldClassNavbar
+export default WorldClassNavbar;
